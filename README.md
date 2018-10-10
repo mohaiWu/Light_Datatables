@@ -10,6 +10,7 @@ $this->load->library('light_datatables');
 ```
 
 ## 快速開始
+[使用說明](https://hackmd.io/s/BJNnBnndQ)
 ### 基本的Server Side Data Tables
 在以下的程式中，我們以一個簡單的佈告欄作為範例，展示一個基本的 Data Tables 於 Server Side模式中的使用方法。
 #### HTML and JavaScript
@@ -51,7 +52,7 @@ public function datatable(){
     $this->light_datatables->ci->db->select('title, time');
     $this->light_datatables->set_querycolumn($order,$like);
     $this->light_datatables->order_by('time','DESC');
-    $this->light_datatables->set_output($output,$extra);
+    $this->light_datatables->set_output($output);
     echo $this->light_datatables->get_datatable();
 }
 ```
