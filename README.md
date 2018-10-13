@@ -129,7 +129,7 @@ $output=array($buttton,'title','time',$img);
 $extra=array('key','imgname');
 $this->light_datatables->set_output($output,$extra);
 ```
-#### 需要其他邏輯處理字串
+#### 需要其他的邏輯處理字串
 ```php=0
 $editButtton = '<button type="button" onclick="openEdit(\'[extra]\')">edit</button>';
 $delButtton = '<button type="button" onclick="openDel(\'[extra]\')">del</button>';
@@ -145,7 +145,7 @@ $this->light_datatables->set_output($output,$extra,$functions);
 * 第4行~第6行，創建一個帶有一個傳入值的「匿名函數(anonymous function)」，這代表的是所有的[extra]在被替換成所指向的「key」前，會先進入這個匿名函數進行運算，最後再回傳結果(傳入值與回傳是必須的)。
 * 第7行，將$functions一同傳入擴充庫中。
 
-#### 邏輯處理字串有不同的需求
+#### 有不同的處理需求
 ```php=0
 $editButtton = '<button type="button" onclick="openEdit(\'[extra]\')">edit</button>';
 $delButtton = '<button type="button" onclick="openDel(\'[extra]\')">del</button>';
