@@ -13,7 +13,6 @@
 	*        
 	*/
 	class Light_datatables{
-
 		public 	$ci;
 		private $order_column = array();
 		private $like_column = array();
@@ -22,14 +21,12 @@
 		private $output_extra = array();
 		private $output_function = NULL;
 		private $output_case = false;
-
 	    public function __construct(){
 	    	//使$ci參考CodeIgniter物件，並載入database函數
 	    	$this->ci =& get_instance();
 	    	$this->ci->load->database();
 	    	$this->ci->db->start_cache();
 	    }
-
 	    /**
 	     * 初始化變數內容
 	     */
@@ -42,7 +39,6 @@
 			$this->output_function = NULL;
 			$this->output_case = false;
 	    }
-
 	    /**
 	     * 設定所要排序、比對的項目
 	     *
@@ -54,7 +50,6 @@
 	    	$this->like_column = $like;
 	    	return $this;
 	    }
-
 	    /**
 	     * 設定預設排序項目
 	     * 
@@ -66,7 +61,6 @@
 	    	$this->preset_order = array($item, $type);
 	    	return $this;
 	    }
-
 	    /**
 	     * 設定實際輸出的序列與額外合成項目
 	     *
@@ -87,7 +81,6 @@
 	    	}
 	    	return $this;
 	    }
-
 	    /**
 	     * 創建or_like語句
 	     *
@@ -112,7 +105,6 @@
 	        }
 	        return $where;
 	    }
-
 	    /**
 	     * 設定like語句
 	     *
@@ -121,11 +113,10 @@
 	    private function set_like($value){
 	    	$likeCount = count($this->like_column);
 	    	if($likeCount>0){
-	            $where = $this->makeOrLike($this->like_column,$value);
-	            $this->ci->db->make_or_like($where, NULL, FALSE);
+	            $where = $this->make_or_like($this->like_column,$value);
+	            $this->ci->db->where($where, NULL, FALSE);
 	    	}
 	    }
-
 	    /**
 	     * 查詢是否有有排序或搜索的要求
 	     */
@@ -133,14 +124,12 @@
 	        if(!empty($_POST["search"]["value"])){  
 	            $this->set_like($_POST["search"]["value"]);
 	        }
-
 	        if(isset($_POST["order"])){  
 	            $this->ci->db->order_by($this->order_column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);  
 	        }else{  
 	            $this->ci->db->order_by($this->preset_order[0], $this->preset_order[1]);  
 	        }
 	    }
-
 	    /**
 	     * 執行查詢
 	     * 在此停止ci->db類別紀錄規則
@@ -157,7 +146,6 @@
 			$query = $this->ci->db->get();
 			return $query->result_array();
 	    }
-
 	    /**
 	     * 搜索總筆數
 	     */
@@ -166,7 +154,6 @@
 	        $query = $this->ci->db->get();  
 	        return $query->num_rows(); 
 	    }
-
 	    /**
 	     * 總筆數
 	     */
@@ -174,7 +161,6 @@
 	    	$this->extra_config();
 	        return $this->ci->db->count_all_results();  
 	    }
-
 	    /**
 	     * 合成每列資料的內容，包含[extra]之判斷與串接
 	     * 
@@ -214,7 +200,6 @@
 	    	}
 	    	return $sub_array;
 	    }
-
 	    /**
 	     * 取得完整的Datatable Json字串
 	     * @return string
@@ -234,5 +219,4 @@
 			return json_encode($output);
 	    }
 	}
-
 ?>
