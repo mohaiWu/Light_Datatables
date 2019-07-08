@@ -7,7 +7,7 @@
 	* @package    CodeIgniter
 	* @subpackage libraries
 	* @category   library
-	* @version    1.0<beta>
+	* @version    1.2
 	* @author    mohaiWU <stp92088@gmail.com>
 	* @link       https://github.com/mohaiWu/Light_Datatables
 	*        
@@ -144,7 +144,7 @@
 				}
 	    	}
 			$query = $this->ci->db->get();
-			return $query->result_array();
+			return $query;
 	    }
 	    /**
 	     * 搜索總筆數
@@ -180,7 +180,7 @@
 			            	if(!is_null($this->output_function)){
 			            		$this_on_function = $this->output_function;
 			            		if($this->output_case){
-				            		$callback = $this_on_function($row[$this->output_extra[$extraNum]],($j+1));
+				            		$callback = $this_on_function($row[$this->output_extra[$extraNum]],($extraNum+1));
 			            		}else{
 				            		$callback = $this_on_function($row[$this->output_extra[$extraNum]]);
 			            		}
@@ -199,24 +199,37 @@
 	    		}
 	    	}
 	    	return $sub_array;
-	    }
+		}
+		
+		public function getDataBaseError(){
+			$db_error = $this->ci->db->error();
+			$data['status'] = "dbErr";
+			$data['msg'] = $db_error['message'];
+			$data['code'] = $db_error['code'];
+			$data['sql'] = $this->ci->db->last_query();
+			return json_encode($data);			
+		}
+
 	    /**
 	     * 取得完整的Datatable Json字串
 	     * @return string
 	     */
 	    public function get_datatable(){
-	    	$result = $this->get_result();
-	        $data = array();
-			foreach ($result as $row){
-				$data[] = $this->get_output_data($row);
+			if($result = $this->get_result()){
+				$data = array();
+				foreach ($result->result_array() as $row){
+					$data[] = $this->get_output_data($row);
+				}
+				$output = array(
+					"recordsTotal" => $this->get_total(),
+					"recordsFiltered" => $this->get_filtered(),
+					"data" => $data
+				);
+				$this->initialization();
+				return json_encode($output);
+			}else{
+				return $this->getDataBaseError();
 			}
-			$output = array(
-				"recordsTotal" => $this->get_total(),
-				"recordsFiltered" => $this->get_filtered(),
-				"data" => $data
-			);
-			$this->initialization();
-			return json_encode($output);
 	    }
 	}
 ?>
